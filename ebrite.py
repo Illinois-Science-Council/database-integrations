@@ -7,7 +7,7 @@ from eventbrite import Eventbrite
 
 KEY_FILENAME = 'db_keys - Sheet1.csv'
 
-
+# Get token from key file
 with open(KEY_FILENAME) as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
