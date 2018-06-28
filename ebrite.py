@@ -1,9 +1,17 @@
+import csv
 import os
+from pprint import pprint
 
 from eventbrite import Eventbrite
 
-# FIRST MUST SET THE EVENTBRITE TOKEN TO ENVIRONMENTAL VARIABLE
-oath_token = os.environ['OAUTH_TOKEN']
+
+KEY_FILENAME = 'db_keys - Sheet1.csv'
+
+
+with open(KEY_FILENAME) as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+    	oath_token = row['Eventbrite']
 
 eventbrite = Eventbrite(oath_token)
 
@@ -13,11 +21,13 @@ print(user)
 
 # Get events information
 events = eventbrite.get('/users/me/owned_events')
-print(events)
+for event in events['events']:
+    print(event['name']['text'], event['id'])
 
-# TODO Get event id from list of events
-event_id = 0
+# Get information for an event
+an_event = events['events'][0]
+event_id = an_event['id']
 
-# Get information for specific event
-event = eventbrite.get('/events/' + str(event_id))
-print(event)
+# Get information for the specified event
+event_info = eventbrite.get('/events/' + str(event_id))
+pprint(event_info)
